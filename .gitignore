@@ -1,5 +1,7 @@
 # feeder specific
 data/
+db/*
+!/db/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

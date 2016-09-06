@@ -7,9 +7,13 @@
 
 import scrapy
 
+
 class Article(scrapy.Item):
+    domain = scrapy.Field()
     scraped_at = scrapy.Field()
-    source_url = scrapy.Field()
+    scraped_url = scrapy.Field()
+    mobile_source_url = scrapy.Field()
+    desktop_source_url = scrapy.Field()
     title_raw = scrapy.Field()
     body_raw = scrapy.Field()
     date_at_raw = scrapy.Field()

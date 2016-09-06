@@ -20,7 +20,7 @@ class DeloSpider(scrapy.Spider):
 
     @property
     def number_of_pages(self):
-        return 10
+        return 100
 
     @property
     def categories(self):
@@ -39,15 +39,16 @@ class DeloSpider(scrapy.Spider):
 
     def parse_article(self, response):
         title = ''.join(response.css('title::text').extract())
-
-        article = ''.join(response.css('div.article').xpath('./node()').extract())
-        out = sub('\s\s+', " ", article)
+        article = sub('\s\s+', ' ', ''.join(response.css('div.article').xpath('./node()').extract()))
 
         return Article(
+            domain='delo.si',
             scraped_at=arrow.utcnow(),
-            source_url=response.url,
+            scraped_url=response.url,
+            mobile_source_url=response.url,
+            desktop_source_url=sub('m\.delo', 'www.delo', response.url, 1),
             title_raw=title,
-            body_raw=out,
+            body_raw=article,
             image_urls=self.parse_images(response),
             date_at_raw=self.parse_date(response)
         )
