@@ -17,3 +17,17 @@ Initialize PostgreSQL database
 initdb -E utf8 db/pg-data -U postgres
 psql -U postgres -c "CREATE DATABASE feeder_dev;"
 ```
+
+## Spiders
+
+```bash
+scrapy crawl delo -a mode=refresh -a categories=novice -a pages=2
+scrapy crawl 24ur -a mode=refresh -a pages=2 -a categories=novice/gospodarstvo -L WARNING
+```
+
+## Tools and scripts
+
+```bash
+./refresh.sh # Does shallow scrape try to fetch more recent items
+./recreate_database.py # Drops existing database and creates new one
+```

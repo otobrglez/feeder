@@ -94,7 +94,7 @@ ITEM_PIPELINES = {
 # Images
 IMAGES_STORE = './data/images'
 
-IMAGES_MIN_WIDTH = 460
+IMAGES_MIN_WIDTH = 300 # 460
 
 DATABASE = {
     'drivername': 'postgres',

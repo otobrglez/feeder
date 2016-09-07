@@ -2,6 +2,8 @@
 from feeder.models import *
 from sqlalchemy.orm import sessionmaker
 
+# from pdb import set_trace
+
 
 class FeederPipeline(object):
     def __init__(self):
@@ -10,6 +12,9 @@ class FeederPipeline(object):
 
     def process_item(self, item, spider):
         repository = self.Session()
+
+        if item.get('images'):
+            item['images'] = [i['path'] for i in item.get('images')]
 
         article = DBArticle(**item)
 

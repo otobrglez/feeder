@@ -7,8 +7,10 @@ from feeder.utils import html2text
 from feeder.items import Article
 import arrow
 
+from feeder.spiders import FeederSpider
 
-class DeloSpider(scrapy.Spider):
+
+class DeloSpider(FeederSpider):
     name = "delo"
     allowed_domains = ["m.delo.si"]
     base_url = 'http://m.delo.si'
@@ -19,12 +21,23 @@ class DeloSpider(scrapy.Spider):
                 ((category, page) for category in self.categories for page in range(1, self.number_of_pages)))
 
     @property
-    def number_of_pages(self):
-        return 100
+    def categories(self):
+        if self.over_categories:
+            return self.over_categories
+        else:
+            return ['novice', 'gospodarstvo', 'svet']
 
     @property
-    def categories(self):
-        return ['novice', 'gospodarstvo']  # + svet
+    def number_of_pages(self):
+        if self.over_pages:
+            return self.over_pages
+
+        if self.mode == 'refresh':
+            return 5
+        elif self.mode == 'big':
+            return 200
+        else:
+            raise Exception('Unknown mode')
 
     def parse(self, response):
         if search('/page/\d+$', response.url):
@@ -50,7 +63,7 @@ class DeloSpider(scrapy.Spider):
             title_raw=title,
             body_raw=article,
             image_urls=self.parse_images(response),
-            date_at_raw=self.parse_date(response)
+            date_at=self.parse_date(response)
         )
 
     def parse_images(self, response):
